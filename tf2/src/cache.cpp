@@ -273,16 +273,17 @@ bool TimeCache::insertData(const TransformStorage& new_data, std::string* error_
       break;
     storage_it++;
   }
+  // Allow to replace TF with the same timestamp
   if (storage_it != storage_.end() && storage_it->stamp_ == new_data.stamp_)
   {
-    return true;
+    *storage_it = new_data;
   }
   else
   {
     storage_.insert(storage_it, new_data);
+    pruneList();
   }
 
-  pruneList();
   return true;
 }
 
